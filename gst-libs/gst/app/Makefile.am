@@ -3,6 +3,7 @@ lib_LTLIBRARIES = libgstapp-@GST_API_VERSION@.la
 glib_enum_define = GST_APP
 glib_gen_prefix = __gst_app
 glib_gen_basename = app
+glib_gen_decl_banner=GST_EXPORT
 
 glib_enum_headers = gstappsrc.h
 
@@ -38,7 +39,7 @@ gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgstapp_@GST_API_VERSION@_la
 
 GstApp-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgstapp-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
-		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_DISABLE=yes \
 		CPPFLAGS="$(CPPFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" CC="$(CC)" PKG_CONFIG="$(PKG_CONFIG)" DLLTOOL="$(DLLTOOL)" \
 		$(INTROSPECTION_SCANNER) -v --namespace GstApp \
 		--nsversion=@GST_API_VERSION@ \

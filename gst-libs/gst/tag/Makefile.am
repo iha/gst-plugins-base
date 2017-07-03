@@ -4,6 +4,7 @@ libgsttagincludedir = \
 glib_enum_define = GST_TAG
 glib_gen_prefix = gst_tag
 glib_gen_basename = tag
+glib_gen_decl_banner=GST_EXPORT
 
 glib_enum_headers = tag.h gsttagdemux.h
 
@@ -49,7 +50,7 @@ gir_sources+=$(patsubst %,$(builddir)/%, $(nodist_libgsttag_@GST_API_VERSION@_la
 
 GstTag-@GST_API_VERSION@.gir: $(INTROSPECTION_SCANNER) libgsttag-@GST_API_VERSION@.la
 	$(AM_V_GEN)PKG_CONFIG_PATH="$(GST_PKG_CONFIG_PATH)" GI_SCANNER_DISABLE_CACHE=yes\
-		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_UPDATE=no \
+		GST_PLUGIN_SYSTEM_PATH_1_0="" GST_PLUGIN_PATH_1_0="" GST_REGISTRY_DISABLE=yes \
 		CPPFLAGS="$(CPPFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" CC="$(CC)" PKG_CONFIG="$(PKG_CONFIG)" DLLTOOL="$(DLLTOOL)" \
 		$(INTROSPECTION_SCANNER) -v --namespace GstTag \
 		--nsversion=@GST_API_VERSION@ \

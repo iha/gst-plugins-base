@@ -245,7 +245,12 @@ gst_fd_allocator_init (GstFdAllocator * allocator)
 GstAllocator *
 gst_fd_allocator_new (void)
 {
-  return g_object_new (GST_TYPE_FD_ALLOCATOR, NULL);
+  GstAllocator *alloc;
+
+  alloc = g_object_new (GST_TYPE_FD_ALLOCATOR, NULL);
+  gst_object_ref_sink (alloc);
+
+  return alloc;
 }
 
 /**

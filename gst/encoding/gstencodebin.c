@@ -594,13 +594,10 @@ static inline gboolean
 are_raw_caps (const GstCaps * caps)
 {
   GstCaps *raw = gst_static_caps_get (&default_raw_caps);
+  gboolean res = gst_caps_can_intersect (caps, raw);
 
-  if (gst_caps_can_intersect (caps, raw)) {
-    gst_caps_unref (raw);
-    return TRUE;
-  }
   gst_caps_unref (raw);
-  return FALSE;
+  return res;
 }
 
 /* Returns the number of time a given stream profile is currently used
@@ -1504,6 +1501,7 @@ _create_stream_group (GstEncodeBin * ebin, GstEncodingProfile * sprof,
         missing_element_name = "videorate";
         goto missing_element;
       }
+      g_object_set (vrate, "skip-to-first", TRUE, NULL);
 
       gst_bin_add ((GstBin *) ebin, vrate);
       tosync = g_list_prepend (tosync, vrate);
@@ -1530,11 +1528,13 @@ _create_stream_group (GstEncodeBin * ebin, GstEncodingProfile * sprof,
     GST_LOG ("Adding conversion elements for audio stream");
 
     arate = gst_element_factory_make ("audiorate", NULL);
-    g_object_set (arate, "tolerance", (guint64) ebin->tolerance, NULL);
     if (!arate) {
       missing_element_name = "audiorate";
       goto missing_element;
     }
+    g_object_set (arate, "tolerance", (guint64) ebin->tolerance, NULL);
+    g_object_set (arate, "skip-to-first", TRUE, NULL);
+
     aconv = gst_element_factory_make ("audioconvert", NULL);
     aconv2 = gst_element_factory_make ("audioconvert", NULL);
     ares = gst_element_factory_make ("audioresample", NULL);
